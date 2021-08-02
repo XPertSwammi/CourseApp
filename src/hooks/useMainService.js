@@ -1,16 +1,12 @@
-import {useState, useEffect, useContext} from 'react';
-import {ServiseContext} from './context';
+import {useState, useEffect} from 'react';
 
-const useService = () => {
+const useMainService = getData => {
   const [state, setState] = useState({
     results: [],
     isLoading: true,
     isError: false,
   });
-
   const [page, setPage] = useState(1);
-
-  const service = useContext(ServiseContext);
 
   const loadMore = () => {
     setState({...state, isLoading: true});
@@ -19,14 +15,14 @@ const useService = () => {
 
   useEffect(() => {
     console.log('useEffect');
-    service
-      .getPeople(page)
+
+    getData(page)
       .then(data => {
         setState(prev => {
           return {
             ...prev,
-            isLoading: false,
             results: [...prev.results, ...data],
+            isLoading: false,
           };
         });
       })
@@ -39,9 +35,9 @@ const useService = () => {
           };
         });
       });
-  }, [page, service]);
+  }, [page, getData]);
 
-  return [state, loadMore];
+  return {state, loadMore, setPage};
 };
 
-export default useService;
+export default useMainService;

@@ -19,24 +19,39 @@ if (
 }
 
 const ContactItem = props => {
-  const {firstName, lastName, email, phone, picture, postcode, city, address} =
-    props.data;
+  const {
+    id,
+    firstName,
+    lastName,
+    email,
+    phone,
+    picture,
+    postcode,
+    city,
+    address,
+  } = props.data;
+  const {setItemDetailModalVisible, getItemId} = props;
 
   const [isVisible, setIsVisble] = useState(false);
 
   const press = () => {
-    LayoutAnimation.configureNext(
-      LayoutAnimation.create(70, 'linear', 'scaleY'),
-    );
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsVisble(!isVisible);
+  };
+
+  const onImagePress = () => {
+    getItemId(id);
+    setItemDetailModalVisible(true);
   };
 
   return (
     <TouchableOpacity onPress={press}>
       <View style={style.card}>
-        <View style={style.imageContainer}>
-          <Image style={style.contactImage} source={{uri: picture}} />
-        </View>
+        <TouchableOpacity onPress={onImagePress}>
+          <View style={style.imageContainer}>
+            <Image style={style.contactImage} source={{uri: picture}} />
+          </View>
+        </TouchableOpacity>
         <View style={style.contactInfo}>
           <Text style={style.contactName}>{`${firstName} ${lastName}`}</Text>
           <Text style={style.contactPhone}>{`Phone: ${phone}`} </Text>

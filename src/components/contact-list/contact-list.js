@@ -2,9 +2,15 @@ import React from 'react';
 import {FlatList, SafeAreaView, ActivityIndicator} from 'react-native';
 import ContactItem from '../contact-item/contact-item';
 
-const ContactList = ({data, loadMore}) => {
-  const {results, isLoading} = data;
-
+const ContactList = ({
+  data,
+  loadMore,
+  isLoading,
+  term,
+  selectedCity,
+  setItemDetailModalVisible,
+  getItemId,
+}) => {
   const rendreFooter = () => {
     return isLoading ? <ActivityIndicator size="large" color="00ADD3" /> : null;
   };
@@ -12,10 +18,18 @@ const ContactList = ({data, loadMore}) => {
   return (
     <SafeAreaView>
       <FlatList
-        data={results}
-        renderItem={({item}) => <ContactItem data={item} />}
+        data={data}
+        renderItem={({item}) => (
+          <ContactItem
+            data={item}
+            setItemDetailModalVisible={setItemDetailModalVisible}
+            getItemId={getItemId}
+          />
+        )}
+        onEndReached={
+          term.length || (selectedCity !== null) > 0 ? null : loadMore
+        }
         keyExtractor={item => item.id}
-        onEndReached={() => loadMore()}
         onEndReachedThreshold={0}
         ListFooterComponent={() => rendreFooter()}
       />

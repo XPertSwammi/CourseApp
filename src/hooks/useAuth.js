@@ -36,12 +36,10 @@ const useAuth = () => {
           } catch (error) {
             console.log(error);
           }
-
           dispatch({type: 'LOGIN', userName: userName, token: userToken});
         } else {
           dispatch({type: 'AUTH_FAILURE'});
         }
-        return userToken;
       },
 
       signOut: async () => {

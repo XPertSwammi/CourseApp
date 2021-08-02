@@ -1,17 +1,19 @@
 import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import ContactStackScreen from './contact-stack-screen';
 import {AuthContext, AuthStateContext} from '../hooks/context';
 import useAuth from '../hooks/useAuth';
 import {useAppState} from '@react-native-community/hooks';
+import AuthScreen from '../screens/authScreen';
+import AppStackScreen from './app-stack-screen';
+import ModalFilterScreen from '../screens/modalFilterScreen';
 
 const RootStack = createStackNavigator();
 
 const Navigation = () => {
   const [authContext, authState] = useAuth();
+  const {token} = authState;
   const appState = useAppState();
-  console.log(authState);
 
   useEffect(() => {
     if (appState === 'background') {
@@ -24,10 +26,18 @@ const Navigation = () => {
       <AuthStateContext.Provider value={authState}>
         <NavigationContainer>
           <RootStack.Navigator headerMode="none">
-            <RootStack.Screen
-              name="contactAndAuth"
-              component={ContactStackScreen}
-            />
+            {token === null ? (
+              <RootStack.Screen name="auth" component={AuthScreen} />
+            ) : (
+              <>
+                <RootStack.Screen name="app" component={AppStackScreen} />
+                <RootStack.Screen
+                  component={ModalFilterScreen}
+                  name="ModalFilter"
+                  options={{headerShown: false}}
+                />
+              </>
+            )}
           </RootStack.Navigator>
         </NavigationContainer>
       </AuthStateContext.Provider>

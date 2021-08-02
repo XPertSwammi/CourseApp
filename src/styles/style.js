@@ -96,10 +96,16 @@ const style = StyleSheet.create({
   failureContainer: {
     borderColor: 'tomato',
     borderRadius: 15,
-    borderWidth: 1,
+    borderWidth: 3,
     padding: 10,
     width: '100%',
     top: -20,
+  },
+  btnSubmit: {
+    marginTop: 10,
+    padding: 15,
+    backgroundColor: mainTextColor,
+    borderRadius: 15,
   },
 });
 

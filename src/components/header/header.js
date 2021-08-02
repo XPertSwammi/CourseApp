@@ -4,12 +4,11 @@ import style from '../../styles/style';
 
 const Header = ({scene, navigation}) => {
   const {options} = scene.descriptor;
-  const [canBack, setCanBack] = useState(null);
+  const [canBack, setCanBack] = useState(false);
 
   useEffect(() => {
     setCanBack(navigation.canGoBack());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [canBack, navigation]);
 
   return (
     <SafeAreaView style={style.header}>

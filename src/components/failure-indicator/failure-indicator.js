@@ -1,18 +1,17 @@
-import React, {useEffect} from 'react';
-import {View, Text, LayoutAnimation, Platform, UIManager} from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {Text} from 'react-native';
 import style from '../../styles/style';
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-const FailureIndicator = () => {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+import * as Animatable from 'react-native-animatable';
+
+const FailureIndicator = ({animIndicator}) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current.animate('bounceIn', 1000);
+  }, [animIndicator]);
   return (
-    <View style={style.failureContainer}>
+    <Animatable.View ref={ref} style={style.failureContainer}>
       <Text>Incorrect Login or Password</Text>
-    </View>
+    </Animatable.View>
   );
 };
 

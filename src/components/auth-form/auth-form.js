@@ -1,28 +1,25 @@
 import React, {useContext, useState} from 'react';
-import {TextInput, View, TouchableOpacity, Text} from 'react-native';
+import {TextInput, View} from 'react-native';
 import style from '../../styles/style';
 import {AuthContext, AuthStateContext} from '../../hooks/context';
 import FailureIndicator from '../failure-indicator/failure-indicator';
-import {useNavigation} from '@react-navigation/native';
+import Button from '../button/button';
 
 const AuthForm = () => {
   const {signIn} = useContext(AuthContext);
   const {authFailure} = useContext(AuthStateContext);
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const [animIndicator, setAnimIndicator] = useState(false);
 
   const onSubmit = () => {
-    signIn(userName.toLowerCase(), password.toLowerCase()).then(token => {
-      if (token !== null) {
-        navigation.navigate('Galery');
-      }
-    });
+    signIn(userName.toLowerCase(), password.toLowerCase());
+    setAnimIndicator(!animIndicator);
   };
 
   return (
     <View style={style.formContainer}>
-      {authFailure && <FailureIndicator />}
+      {authFailure && <FailureIndicator animIndicator={animIndicator} />}
       <TextInput
         placeholder="Enter your Login"
         style={style.input}
@@ -35,9 +32,7 @@ const AuthForm = () => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <TouchableOpacity onPress={() => onSubmit()}>
-        <Text>Submit</Text>
-      </TouchableOpacity>
+      <Button label="Submit" onSubmit={onSubmit} />
     </View>
   );
 };

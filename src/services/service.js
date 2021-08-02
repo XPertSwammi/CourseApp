@@ -1,8 +1,9 @@
 class Service {
   _apiBase = 'https://randomuser.me/api/';
+  _galleryApi = 'https://jsonplaceholder.typicode.com/';
 
   getResource = async url => {
-    const res = await fetch(`${this._apiBase}${url}`);
+    const res = await fetch(`${url}`);
     if (!res.ok) {
       throw new Error(`Error ${res.status}`);
     }
@@ -10,8 +11,17 @@ class Service {
   };
 
   getPeople = async page => {
-    const res = await this.getResource(`?page=${page}&results=10`);
+    const res = await this.getResource(
+      `${this._apiBase}?page=${page}&results=10`,
+    );
     return res.results.map(this.transformData);
+  };
+
+  getImages = async page => {
+    const res = await this.getResource(
+      `${this._galleryApi}photos?_limit=10&_page=${page}`,
+    );
+    return res;
   };
 
   transformData = item => {
